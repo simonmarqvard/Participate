@@ -1,0 +1,27 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+#wrapper {
+  background-color: beige;
+  height: 100vh;
+  width: 100vw;
+}
+
+#computerContainer {
+  display: flex;
+  flex-direction: row;
+  margin: auto;
+  width: 600px;
+  height: 200px;
+  background-color: blue;
+}
+
+.electronUser {
+  width: 150px;
+  height: 200px;
+  font-size: 10px;
+  background-color: cyan;
+}
