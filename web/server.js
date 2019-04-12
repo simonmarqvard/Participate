@@ -2,6 +2,7 @@ const express = require("express");
 const server = express();
 const http = require("http");
 const socket = require("socket.io");
+const ss = require("socket.io-stream");
 
 server.use("/", express.static("public"));
 
@@ -36,4 +37,14 @@ io.sockets.on("connection", socket => {
     members--;
     console.log(members);
   });
+
+  socket.on("requestStream", idToCall => {
+    console.log(idToCall);
+    socket.broadcast.emit("getStream", idToCall);
+    console.log("requestStream");
+  });
+
+  // ss(socket).on("streamToServer", (stream, data) => {
+  //   console.log(stream);
+  // });
 });
