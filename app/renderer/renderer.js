@@ -1,8 +1,11 @@
-const socket = require("socket.io-client")("http://localhost:8082");
+const socket = require("socket.io-client")("http://smj470.itp.io:8082");
 const robot = require("robotjs");
 const { dialog } = require("electron").remote;
 const username = require("username");
 const { desktopCapturer } = require("electron");
+
+let peer = new Peer({ host: "smj470.itp.io", port: 9001, path: "/" });
+let peer_id = null;
 
 console.log("Simon renderer");
 
@@ -12,14 +15,6 @@ socket.on("connect", () => {
     socket.emit("electronUserOnline", name);
   });
 });
-
-// We'll use a global variable to hold on to our id from PeerJS
-var peer_id = null;
-
-// Register for an API Key:	http://peerjs.com/peerserver
-//var peer = new Peer({key: 'YOUR API KEY'});
-// The Peer Cloud Server doesn't seem to be operational, I setup a server on a Digital Ocean instance for our use, you can use that with the following constructor:
-var peer = new Peer({ host: "smj470.itp.io", port: 9001, path: "/" });
 
 // Get an ID from the PeerJS server
 peer.on("open", function(id) {
@@ -34,16 +29,7 @@ peer.on("error", function(err) {
 socket.on("electronUserOnline", () => {
   console.log("electron Online");
 });
-//
-// socket.on("userMousePosition", data => {
-//   console.log(data);
-//   robot.moveMouse(data.x, data.y);
-// });
-//
-// socket.on("mouseclickpos", data => {
-//   console.log("click", data);
-//   // robot.moveMouse(data.x, data.y);
-// });
+
 socket.on("electronUserOffline", () => {
   console.log("electronUserOffline");
 });
@@ -69,7 +55,7 @@ socket.on("getStream", id => {
     }
   );
 });
-//add script tag
+
 function handleStream(stream, id) {
   // const video = document.querySelector("video");
   // video.srcObject = stream;
@@ -77,12 +63,7 @@ function handleStream(stream, id) {
 
   console.log("Calling peer: " + id);
   var call = peer.call(`${id}`, stream);
-
   call.on("stream", function(remoteStream) {});
-}
-
-function handleError(e) {
-  console.log(e);
 }
 
 socket.on("disconnect", () => {
