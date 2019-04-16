@@ -35,6 +35,7 @@ socket.on("electronUserOffline", () => {
 });
 
 socket.on("getStream", id => {
+  console.log("asking for stream");
   console.log(id);
   desktopCapturer.getSources(
     { types: ["window", "screen"] },
@@ -60,11 +61,14 @@ function handleStream(stream, id) {
   // const video = document.querySelector("video");
   // video.srcObject = stream;
   // video.onloadedmetadata = e => video.play();
-
   console.log("Calling peer: " + id);
   var call = peer.call(`${id}`, stream);
   call.on("stream", function(remoteStream) {});
 }
+
+socket.on("mouseMove", data => {
+  console.log(data);
+});
 
 socket.on("disconnect", () => {
   socket.emit("electronUserOffline");

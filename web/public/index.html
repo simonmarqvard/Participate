@@ -7,12 +7,16 @@
     <script src="sketch.js"></script>
   </head>
   <body>
-    <button id="simon">getstream</button>
-    <div id="wrapper"><div id="computerContainer"></div></div>
+    <div id="wrapper">
+      <button id="scrollDown"><a href="#wrapper2">down</a></button>
+      <div id="computerContainer"></div>
+    </div>
+    <div id="wrapper2">
+      <button id="scrollUp"><a href="#wrapper">up</a></button>
+      <video id="othervideo"></video>
+    </div>
     <script>
       window.addEventListener("load", initialize());
     </script>
-
-    <video id="othervideo"></video>
   </body>
 </html>

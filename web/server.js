@@ -43,13 +43,34 @@ io.sockets.on("connection", socket => {
   //   socket.broadcast.emit("theOffer", data);
   // });
 
-  socket.on("requestStream", idToCall => {
-    console.log(idToCall);
-    socket.broadcast.emit("getStream", idToCall);
+  let userToCall;
+
+  socket.on("requestStream", data => {
+    console.log("users", electronUsers);
+    electronUsers.forEach(user =>
+      user.username === data.caller
+        ? (userToCall = user.id)
+        : console.log("nope")
+    );
+
+    // console.log("caller", data.caller);
+    // console.log(userToCall);
+
+    // if (data.caller == electronUsers.username) {
+    //   console.log("SOCKET SEND TO", electronUsers.id);
+    // } else {
+    //   console.log("nothing");
+    // }
+    // console.log(idToCall);
+    io.to(userToCall).emit("getStream", data.toCall);
+    console.log(data.toCall);
     console.log("requestStream");
+
+    // ss(socket).on("streamToServer", (stream, data) => {
+    //   console.log(stream);
   });
 
-  // ss(socket).on("streamToServer", (stream, data) => {
-  //   console.log(stream);
-  // });
+  socket.on("mousemove", data => {
+    io.to(userToCall).emit("mouseMove", data);
+  });
 });
