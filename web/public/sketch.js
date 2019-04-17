@@ -2,6 +2,7 @@ const socket = io();
 // let peer = new Peer({ host: "smj470.itp.io", port: 9001, path: "/" });
 let peer = new Peer({ host: "smj470.itp.io", port: 9001, path: "/" });
 let peer_id = null;
+let peerConnection = null;
 
 function initialize() {
   socket.on("connect", () => {
@@ -19,10 +20,10 @@ function initialize() {
     });
 
     users.forEach(user => {
-      let computer = `<button class="electronUser" data-username="${
+      let computer = `<a href="#wrapper2"><button class="electronUser" data-username="${
         user.username
       }" data-id="${user.id}">
-      ${user.username}</button>`;
+      ${user.username}</button></a>`;
       allusers += computer;
     });
     console.log(users);
@@ -40,6 +41,8 @@ function initialize() {
   }
 
   peer.on("call", incoming_call => {
+    peerConnection = incoming_call;
+    console.log("peerConnection on");
     incoming_call.answer();
     incoming_call.on("stream", function(remoteStream) {
       // we receive a getUserMedia stream from the remote caller
@@ -48,10 +51,9 @@ function initialize() {
       ovideoElement.srcObject = remoteStream;
       ovideoElement.setAttribute("autoplay", "true");
       ovideoElement.play();
-    });
-    let x = document.addEventListener("mousemove", e => {
-      let position = e.x;
-      socket.emit("mousemove", position);
+      let hangup = document.getElementById("EndCallScrollUp");
+      hangup.addEventListener("click", endCall);
+      sendMouse();
     });
   });
 
@@ -63,3 +65,51 @@ function initialize() {
     console.log(err);
   });
 }
+
+function endCall() {
+  peerConnection.on("close", () => {
+    console.log("closed MEDIA");
+    document.removeEventListener("mousemove", sendSomeData);
+  });
+  peerConnection.close();
+  peerConnection = null;
+  console.log("peerConnection off");
+  // sendMouse();
+}
+
+function sendMouse() {
+  let x = document.addEventListener("mousemove", sendSomeData);
+}
+
+function sendSomeData(e) {
+  let position = e.x;
+  socket.emit("mousemove", position);
+
+  // socket.emit("mousemove", position);
+}
+
+//   => {
+//     let position = e.x;
+//     socket.emit("mousemove", position);
+//   });
+// }
+
+// if (peerConnection) {
+//   console.log("peerConnection on");
+//   socket.emit("mousemove", position);
+// } else {
+//   console.log("peerconnection off");
+//   //this should destroy connection
+//   socket.emit("nothing");
+// }
+// });
+// }
+
+// function sendMouseData() {
+//   if (peerConnection) {
+//     console.log("Peer now on");
+//     sendMouse();
+//   } else if (peerConnection === null) {
+//     console.log("Peer now off");
+//   }
+// }
