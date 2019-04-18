@@ -23,8 +23,10 @@ function initialize() {
     users.forEach(user => {
       let computer = `<a href="#wrapper2"><button class="electronUser" data-username="${
         user.username
-      }" data-id="${user.id}">
-      ${user.username}</button></a>`;
+      }" data-id="${
+        user.id
+      }"> <img src="./image/monitor.png"><div class="ComputerUsername">
+      ${user.username}</div></button></a>`;
       allusers += computer;
     });
     console.log(users);

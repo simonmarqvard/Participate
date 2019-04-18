@@ -2,12 +2,27 @@
 <html>
   <head>
     <link rel="stylesheet" type="text/css" href="style.css" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Rubik"
+      rel="stylesheet"
+    />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
     <script src="peerjs.min.js"></script>
     <script src="sketch.js"></script>
   </head>
   <body>
-    <div id="wrapper"><div id="computerContainer"></div></div>
+    <div id="wrapper">
+      <div id="titleContainer">
+        <div id="title">PARTICIPATE</div>
+        <div id="subtitle">- take control of the situation</div>
+      </div>
+      <div id="computerContainer"></div>
+      <div id="textOnline">online users</div>
+    </div>
     <div id="wrapper2">
       <button id="EndCallScrollUp"><a href="#wrapper">up</a></button>
       <video id="othervideo"></video>
