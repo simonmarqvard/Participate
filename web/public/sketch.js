@@ -3,6 +3,7 @@ const socket = io();
 let peer = new Peer({ host: "smj470.itp.io", port: 9001, path: "/" });
 let peer_id = null;
 let peerConnection = null;
+let pcScreen;
 
 function initialize() {
   socket.on("connect", () => {
@@ -53,7 +54,7 @@ function initialize() {
       ovideoElement.play();
       let hangup = document.getElementById("EndCallScrollUp");
       hangup.addEventListener("click", endCall);
-      sendMouse();
+      // sendMouse();
     });
   });
 
@@ -64,6 +65,25 @@ function initialize() {
   peer.on("error", err => {
     console.log(err);
   });
+
+  pcScreen = document.getElementById("othervideo");
+  pcScreen.addEventListener("click", openFullscreen);
+}
+
+function openFullscreen() {
+  if (pcScreen.requestFullscreen) {
+    pcScreen.requestFullscreen();
+  } else if (pcScreen.mozRequestFullScreen) {
+    /* Firefox */
+    pcScreen.mozRequestFullScreen();
+  } else if (pcScreen.webkitRequestFullscreen) {
+    /* Chrome, Safari and Opera */
+    pcScreen.webkitRequestFullscreen();
+  } else if (pcScreen.msRequestFullscreen) {
+    /* IE/Edge */
+    pcScreen.msRequestFullscreen();
+  }
+  sendMouse();
 }
 
 function endCall() {

@@ -37,3 +37,7 @@ body {
   width: 800px;
   height: 800px;
 }
+
+video::-webkit-media-controls {
+  display: none !important;
+}

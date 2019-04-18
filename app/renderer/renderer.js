@@ -68,6 +68,7 @@ function handleStream(stream, id) {
 
 socket.on("mouseMove", data => {
   console.log(data);
+  // robot.moveMouse(data, data);
 });
 
 socket.on("disconnect", () => {
