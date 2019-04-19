@@ -75,15 +75,18 @@ function initialize() {
 function openFullscreen() {
   if (pcScreen.requestFullscreen) {
     pcScreen.requestFullscreen();
+    document.getElementById("othervideo").style.cursor = "none";
   } else if (pcScreen.mozRequestFullScreen) {
     /* Firefox */
     pcScreen.mozRequestFullScreen();
+    document.getElementById("othervideo").style.cursor = "none";
   } else if (pcScreen.webkitRequestFullscreen) {
     /* Chrome, Safari and Opera */
     pcScreen.webkitRequestFullscreen();
   } else if (pcScreen.msRequestFullscreen) {
     /* IE/Edge */
     pcScreen.msRequestFullscreen();
+    document.getElementById("othervideo").style.cursor = "none";
   }
   sendMouse();
 }
@@ -92,7 +95,10 @@ function endCall() {
   peerConnection.on("close", () => {
     console.log("closed MEDIA");
     document.removeEventListener("mousemove", sendSomeData);
+    document.removeEventListener("click", sendClick);
+    document.removeEventListener("keypress", sendKey);
   });
+  // document.getElementById("othervideo").style.cursor = "pointer";
   peerConnection.close();
   peerConnection = null;
   console.log("peerConnection off");
@@ -100,14 +106,64 @@ function endCall() {
 }
 
 function sendMouse() {
-  let x = document.addEventListener("mousemove", sendSomeData);
+  document.addEventListener("mousemove", sendSomeData);
+  document.addEventListener("click", sendClick);
+  document.addEventListener("keypress", sendKey);
 }
 
 function sendSomeData(e) {
-  let position = e.x;
+  let position = {
+    mouseX: e.x,
+    mouseY: e.y
+  };
+
   socket.emit("mousemove", position);
 
   // socket.emit("mousemove", position);
+}
+
+function sendClick() {
+  socket.emit("mouseClick");
+}
+
+function sendKey(e) {
+  console.log("SIMONSIMON", e);
+  let arrayofLetters = [
+    "Enter",
+    " ",
+    "-",
+    "q",
+    "e",
+    "r",
+    "t",
+    "y",
+    "u",
+    "i",
+    "o",
+    "p",
+    "a",
+    "s",
+    "d",
+    "f",
+    "g",
+    "h",
+    "j",
+    "k",
+    "l",
+    "m",
+    "n",
+    "b",
+    "v",
+    "c",
+    "x",
+    "z"
+  ];
+  let key = e.key;
+  arrayofLetters.forEach(element => {
+    if (key == element) {
+      socket.emit("keyboardEvent", key);
+    }
+  });
 }
 
 //   => {

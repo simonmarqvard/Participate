@@ -3,6 +3,8 @@ body {
   margin: 0;
   padding: 0;
   scroll-behavior: smooth;
+  height: 100%;
+  overflow: hidden;
 }
 
 #wrapper {
@@ -39,10 +41,42 @@ body {
   color: white;
 }
 
+#title2 {
+  margin-left: 30px;
+  margin-top: 0px;
+  font-family: "Roboto", sans-serif;
+  font-size: 100px;
+  color: RGB(235, 2, 90);
+  letter-spacing: 5px;
+}
+
+#subtitle2 {
+  text-align: center;
+  font-size: 25px;
+  font-family: "Rubik", sans-serif;
+  letter-spacing: 5px;
+  /* background-color: yellow; */
+  height: 30px;
+  color: RGB(235, 2, 90);
+}
+
 #wrapper2 {
-  background-color: green;
+  background-color: white;
   height: 100vh;
   width: 100vw;
+  overflow: hidden;
+}
+
+#EndCallScrollUp {
+  /* transform: rotate(-90deg);
+  -webkit-transform: rotate(-90deg); */
+  font-family: "Rubik", sans-serif;
+  margin-top: 150px;
+  width: 150px;
+  height: 50px;
+  background-color: RGB(235, 2, 90);
+  color: white;
+  /* position: relative; */
 }
 
 #computerContainer {
@@ -54,9 +88,9 @@ body {
   width: 600px;
   height: 200px;
   /* background-color: blue; */
-  margin-top: 100px;
+  margin-top: 40px;
   padding-bottom: 10px;
-  border-bottom: 5px solid black;
+  border-bottom: 3px solid white;
 }
 
 .electronUser {
@@ -65,8 +99,16 @@ body {
   width: 175px;
   height: 200px;
   font-size: 10px;
+  margin-left: 10px;
   background-color: black;
   align-items: center;
+  border: none;
+  border-radius: 5px;
+  -webkit-transition: background-color 1s;
+}
+
+.electronUser:hover {
+  background-color: RGB(255, 129, 133);
 }
 
 img {
@@ -78,13 +120,17 @@ img {
 
 .ComputerUsername {
   margin-top: 10px;
+  padding-top: 10px;
+  letter-spacing: 1px;
+  padding-bottom: 10px;
   pointer-events: none;
   text-decoration: none;
   font-size: 16px;
+  /* letter-spacing: 2px; */
   height: 20px;
   background-color: black;
   color: white;
-  width: 100%;
+  width: 110%;
 }
 
 a {
@@ -93,6 +139,7 @@ a {
 
 #textOnline {
   width: 100%;
+  margin-top: 70px;
   text-align: center;
   padding-top: 10px;
   letter-spacing: 1px;
@@ -103,9 +150,9 @@ a {
 
 #othervideo {
   display: block;
-  margin: 0 auto;
-  width: 700px;
-  height: 700px;
+  margin: -270px auto;
+  width: 650px;
+  height: 650px;
   cursor: zoom-in;
 }
 

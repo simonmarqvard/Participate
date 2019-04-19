@@ -72,6 +72,20 @@ io.sockets.on("connection", socket => {
 
   socket.on("mousemove", data => {
     // console.log(userToCall);
+    // console.log(data);
     io.to(userToCall).emit("mouseMove", data);
+  });
+
+  socket.on("mouseClick", () => {
+    // console.log(userToCall);
+    // console.log(data);
+    io.to(userToCall).emit("mouseClick");
+  });
+
+  socket.on("keyboardEvent", key => {
+    // console.log(userToCall);
+    // console.log(data);
+    console.log(key);
+    io.to(userToCall).emit("keyPress", key);
   });
 });

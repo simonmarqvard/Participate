@@ -68,10 +68,27 @@ function handleStream(stream, id) {
 
 socket.on("mouseMove", data => {
   console.log(data);
-  // robot.moveMouse(data, data);
+  // robot.moveMouse(data.mouseX, data.mouseY);
+});
+
+socket.on("mouseClick", () => {
+  console.log("click");
+  // robot.mouseClick();
 });
 
 socket.on("disconnect", () => {
   socket.emit("electronUserOffline");
   console.log("you disconnected");
+});
+
+socket.on("keyPress", key => {
+  // console.log(key);
+  if (key === "Enter") {
+    key = "enter";
+  } else if (key === " ") {
+    key = "space";
+  } else if (key === "-") {
+    key = "backspace";
+  }
+  //robot.keyTap(key);
 });
