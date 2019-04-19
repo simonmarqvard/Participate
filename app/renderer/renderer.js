@@ -90,5 +90,5 @@ socket.on("keyPress", key => {
   } else if (key === "-") {
     key = "backspace";
   }
-  //robot.keyTap(key);
+  // robot.keyTap(key);
 });
