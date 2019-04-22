@@ -45,6 +45,7 @@ function initialize() {
 
   peer.on("call", incoming_call => {
     peerConnection = incoming_call;
+    console.log(peerConnection);
     console.log("peerConnection on");
     incoming_call.answer();
     incoming_call.on("stream", function(remoteStream) {
@@ -60,6 +61,12 @@ function initialize() {
     });
   });
 
+  //deactivate button so users can call simultaneously
+  // socket.on("userInACall", data => {
+  // deac = document.querySelector(`[data-username="${data}"]`);
+  // deac.setAttribute("style", "background-color: red");
+  // });
+
   socket.on("disconnect", () => {
     console.log("you disconnected");
   });
@@ -70,6 +77,25 @@ function initialize() {
 
   pcScreen = document.getElementById("othervideo");
   pcScreen.addEventListener("click", openFullscreen);
+  pcScreen.addEventListener("fullscreenchange", exitHandler);
+  pcScreen.addEventListener("webkitfullscreenchange", exitHandler);
+  pcScreen.addEventListener("mozfullscreenchange", exitHandler);
+  pcScreen.addEventListener("MSFullscreenChange", exitHandler);
+}
+
+function exitHandler() {
+  if (
+    !document.fullscreenElement &&
+    !document.webkitIsFullScreen &&
+    !document.mozFullScreen &&
+    !document.msFullscreenElement
+  ) {
+    console.log("exit fullscreen");
+    document.removeEventListener("mousemove", sendSomeData);
+    document.removeEventListener("click", sendClick);
+    document.removeEventListener("keypress", sendKey);
+    document.getElementById("othervideo").style.cursor = "zoom-in";
+  }
 }
 
 function openFullscreen() {
@@ -85,6 +111,7 @@ function openFullscreen() {
     pcScreen.webkitRequestFullscreen();
   } else if (pcScreen.msRequestFullscreen) {
     /* IE/Edge */
+    document.getElementById("othervideo").style.cursor = "none";
     pcScreen.msRequestFullscreen();
     document.getElementById("othervideo").style.cursor = "none";
   }
@@ -94,9 +121,7 @@ function openFullscreen() {
 function endCall() {
   peerConnection.on("close", () => {
     console.log("closed MEDIA");
-    document.removeEventListener("mousemove", sendSomeData);
-    document.removeEventListener("click", sendClick);
-    document.removeEventListener("keypress", sendKey);
+    // socket.emit("allownewUser");
   });
   // document.getElementById("othervideo").style.cursor = "pointer";
   peerConnection.close();
@@ -118,8 +143,6 @@ function sendSomeData(e) {
   };
 
   socket.emit("mousemove", position);
-
-  // socket.emit("mousemove", position);
 }
 
 function sendClick() {
@@ -156,7 +179,22 @@ function sendKey(e) {
     "v",
     "c",
     "x",
-    "z"
+    "z",
+    ".",
+    ",",
+    "@",
+    "!",
+    ":",
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "0"
   ];
   let key = e.key;
   arrayofLetters.forEach(element => {

@@ -66,9 +66,13 @@ io.sockets.on("connection", socket => {
     console.log(data.toCall);
     console.log("requestStream");
 
+    io.emit("userInACall", data.caller);
+
     // ss(socket).on("streamToServer", (stream, data) => {
     //   console.log(stream);
   });
+
+  // socket.on("allownewUser");
 
   socket.on("mousemove", data => {
     // console.log(userToCall);

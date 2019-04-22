@@ -82,13 +82,13 @@ socket.on("disconnect", () => {
 });
 
 socket.on("keyPress", key => {
-  // console.log(key);
-  if (key === "Enter") {
-    key = "enter";
-  } else if (key === " ") {
-    key = "space";
-  } else if (key === "-") {
-    key = "backspace";
-  }
+  console.log(key);
+  // if (key === "Enter") {
+  //   key = "enter";
+  // } else if (key === " ") {
+  //   key = "space";
+  // } else if (key === "-") {
+  //   key = "backspace";
+  // }
   // robot.keyTap(key);
 });
