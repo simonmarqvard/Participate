@@ -12,6 +12,7 @@ var io = socket(httpServer);
 
 let members = 0;
 
+// let userInCall = [];
 let electronUsers = [];
 
 httpServer.listen(8082, () => {
@@ -23,9 +24,11 @@ io.sockets.on("connection", socket => {
   members++;
   console.log(members);
   socket.emit("electronUsersOnline", electronUsers);
-
+  // if (userInCall) {
+  //   socket.emit("userInACall", userInCall);
+  // }
   socket.on("electronUserOnline", username => {
-    electronUsers.push({ username: username, id: socket.id });
+    electronUsers.push({ username: username, id: socket.id, call: false });
     console.log(electronUsers);
     socket.broadcast.emit("electronUsersOnline", electronUsers);
   });
@@ -43,36 +46,40 @@ io.sockets.on("connection", socket => {
   //   socket.broadcast.emit("theOffer", data);
   // });
 
+  // socket.on("busyUser", caller => {
+  //   userInCall.push(caller);
+  //   console.log(userInCall);
+  //   io.emit("userInACall", userInCall);
+  // });
+
   let userToCall;
 
   socket.on("requestStream", data => {
-    console.log("users", electronUsers);
-    electronUsers.forEach(user =>
+    // console.log("users", electronUsers);
+    electronUsers.forEach(user => {
       user.username === data.caller
         ? (userToCall = user.id)
-        : console.log("nope")
-    );
-
-    // console.log("caller", data.caller);
-    // console.log(userToCall);
-
-    // if (data.caller == electronUsers.username) {
-    //   console.log("SOCKET SEND TO", electronUsers.id);
-    // } else {
-    //   console.log("nothing");
-    // }
-    // console.log(idToCall);
+        : console.log("nope");
+      if (user.username === data.caller) {
+        user.call = true;
+      }
+    });
+    io.emit("busyElectronUsers", electronUsers);
     io.to(userToCall).emit("getStream", data.toCall);
     console.log(data.toCall);
-    console.log("requestStream");
-
-    io.emit("userInACall", data.caller);
 
     // ss(socket).on("streamToServer", (stream, data) => {
     //   console.log(stream);
   });
 
-  // socket.on("allownewUser");
+  socket.on("userFree", data => {
+    electronUsers.forEach(user => {
+      if (user.username === data) {
+        user.call = false;
+      }
+    });
+    io.emit("busyElectronUsers", electronUsers);
+  });
 
   socket.on("mousemove", data => {
     // console.log(userToCall);

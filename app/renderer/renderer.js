@@ -67,13 +67,13 @@ function handleStream(stream, id) {
 }
 
 socket.on("mouseMove", data => {
-  console.log(data);
-  // robot.moveMouse(data.mouseX, data.mouseY);
+  // console.log(data);
+  robot.moveMouse(data.mouseX, data.mouseY);
 });
 
 socket.on("mouseClick", () => {
-  console.log("click");
-  // robot.mouseClick();
+  // console.log("click");
+  robot.mouseClick();
 });
 
 socket.on("disconnect", () => {
@@ -82,13 +82,13 @@ socket.on("disconnect", () => {
 });
 
 socket.on("keyPress", key => {
-  console.log(key);
-  // if (key === "Enter") {
-  //   key = "enter";
-  // } else if (key === " ") {
-  //   key = "space";
-  // } else if (key === "-") {
-  //   key = "backspace";
-  // }
-  // robot.keyTap(key);
+  // console.log(key);
+  if (key === "Enter") {
+    key = "enter";
+  } else if (key === " ") {
+    key = "space";
+  } else if (key === "-") {
+    key = "backspace";
+  }
+  robot.keyTap(key);
 });

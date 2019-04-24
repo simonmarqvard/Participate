@@ -4,6 +4,7 @@ let peer = new Peer({ host: "smj470.itp.io", port: 9001, path: "/" });
 let peer_id = null;
 let peerConnection = null;
 let pcScreen;
+let caller;
 
 function initialize() {
   socket.on("connect", () => {
@@ -34,13 +35,31 @@ function initialize() {
 
     userButton = document.querySelectorAll(".electronUser");
     console.log(userButton);
+
+    //lav til function
+    users.forEach(user => {
+      let deec = document.querySelector(`[data-username="${user.username}"]`);
+      console.log(deec);
+      if (user.call) {
+        deec.setAttribute("style", "background-color: orange;");
+      } else {
+        deec.setAttribute("style", "background-color: black;");
+      }
+    });
+    //lav til function
+
     userButton.forEach(user => user.addEventListener("click", createStream));
   });
 
+  let hangup = document.getElementById("EndCallScrollUp");
+
   function createStream(e) {
-    let caller = e.target.getAttribute("data-username");
+    caller = e.target.getAttribute("data-username");
+
     socket.emit("requestStream", { toCall: peer_id, caller: caller });
     console.log("requestStream");
+    hangup.setAttribute("data-caller", `${caller}`);
+    // socket.emit("busyUser", caller);
   }
 
   peer.on("call", incoming_call => {
@@ -55,17 +74,26 @@ function initialize() {
       ovideoElement.srcObject = remoteStream;
       ovideoElement.setAttribute("autoplay", "true");
       ovideoElement.play();
-      let hangup = document.getElementById("EndCallScrollUp");
+      console.log(hangup);
+      // hangup.setAttribute
       hangup.addEventListener("click", endCall);
       // sendMouse();
     });
   });
 
-  //deactivate button so users can call simultaneously
-  // socket.on("userInACall", data => {
-  // deac = document.querySelector(`[data-username="${data}"]`);
-  // deac.setAttribute("style", "background-color: red");
-  // });
+  //deactivate button so users cant call simultaneously
+  socket.on("busyElectronUsers", users => {
+    console.log(users);
+    users.forEach(user => {
+      let deec = document.querySelector(`[data-username="${user.username}"]`);
+      console.log(deec);
+      if (user.call) {
+        deec.setAttribute("style", "background-color: orange;");
+      } else {
+        deec.setAttribute("style", "background-color: black;");
+      }
+    });
+  });
 
   socket.on("disconnect", () => {
     console.log("you disconnected");
@@ -121,8 +149,11 @@ function openFullscreen() {
 function endCall() {
   peerConnection.on("close", () => {
     console.log("closed MEDIA");
-    // socket.emit("allownewUser");
+    let hangButton = document.getElementById("EndCallScrollUp");
+    let callname = hangButton.getAttribute("data-caller");
+    socket.emit("userFree", callname);
   });
+  socket.emit;
   // document.getElementById("othervideo").style.cursor = "pointer";
   peerConnection.close();
   peerConnection = null;
