@@ -1,4 +1,4 @@
-const socket = require("socket.io-client")("http://smj470.itp.io:8082");
+const socket = require("socket.io-client")("http://www.simonmjensen.com");
 const robot = require("robotjs");
 const { dialog } = require("electron").remote;
 const username = require("username");
@@ -89,6 +89,12 @@ socket.on("keyPress", key => {
     key = "space";
   } else if (key === "-") {
     key = "backspace";
+  } else if (key === "=") {
+    key = "=";
+  } else if (key === "(") {
+    key = "(";
+  } else if (key === ")") {
+    key = ")";
   }
   robot.keyTap(key);
 });
