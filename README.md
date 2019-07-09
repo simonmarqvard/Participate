@@ -8,7 +8,7 @@
 <p> The application is built using peer.js, electron.js and Robot.js. The project
 consists of two pieces: A Desktop application and a webpage. The webpage is the central
 command from which you can take control of other computers (In this case www.simonmjensen.com). The computers
-you want to remote control must have the application installed. The source code for both parts is available on this page. </p>
+you want to remote control must have the application installed and running. The source code for both parts is available on this page. </p>
 
 ![](part.gif)
 
@@ -28,4 +28,6 @@ use this application around people you trust/modify it to your own needs.
 [app]$ npm run client
 ```   
 
-go to simonmjensen.com
+<p>This will connect you to my peerserver and to the Participate webpage through a socket connection. </p>
+
+<p> Go to www.simonmjensen.com from any computer and you should be able to see your computername and access the controls </p>
