@@ -34,6 +34,7 @@ socket.on("electronUserOffline", () => {
   console.log("electronUserOffline");
 });
 
+//activate stream using peerID
 socket.on("getStream", id => {
   console.log("asking for stream");
   console.log(id);
@@ -66,13 +67,13 @@ function handleStream(stream, id) {
   call.on("stream", function(remoteStream) {});
 }
 
+//move mouse according to x.y position with ROBOTJS
 socket.on("mouseMove", data => {
-  // console.log(data);
   robot.moveMouse(data.mouseX, data.mouseY);
 });
 
+//click using ROBOTJS
 socket.on("mouseClick", () => {
-  // console.log("click");
   robot.mouseClick();
 });
 
@@ -81,6 +82,8 @@ socket.on("disconnect", () => {
   console.log("you disconnected");
 });
 
+//click buttons received from user 
+//special characters
 socket.on("keyPress", key => {
   // console.log(key);
   if (key === "Enter") {
@@ -96,5 +99,5 @@ socket.on("keyPress", key => {
   } else if (key === ")") {
     key = ")";
   }
-  robot.keyTap(key);
+  robot.keyTap(key);   //normal characters
 });
