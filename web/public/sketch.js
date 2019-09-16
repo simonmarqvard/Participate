@@ -21,6 +21,7 @@ function initialize() {
       peer_id = id;
     });
 
+    //show electron users
     users.forEach(user => {
       let computer = `<a href="#wrapper2"><button class="electronUser" data-username="${
         user.username
@@ -36,7 +37,7 @@ function initialize() {
     userButton = document.querySelectorAll(".electronUser");
     console.log(userButton);
 
-    //lav til function
+    //if user is in a call turn backgroun orange otherwise black
     users.forEach(user => {
       let deec = document.querySelector(`[data-username="${user.username}"]`);
       console.log(deec);
@@ -46,12 +47,12 @@ function initialize() {
         deec.setAttribute("style", "background-color: black;");
       }
     });
-    //lav til function
 
+    //make call when clicking the user
     userButton.forEach(user => user.addEventListener("click", createStream));
   });
 
-  let hangup = document.getElementById("EndCallScrollUp");
+   let hangup = document.getElementById("EndCallScrollUp");
 
   function createStream(e) {
     caller = e.target.getAttribute("data-username");
@@ -59,12 +60,10 @@ function initialize() {
     socket.emit("requestStream", { toCall: peer_id, caller: caller });
     console.log("requestStream");
     hangup.setAttribute("data-caller", `${caller}`);
-    // socket.emit("busyUser", caller);
   }
 
   peer.on("call", incoming_call => {
     peerConnection = incoming_call;
-    console.log(peerConnection);
     console.log("peerConnection on");
     incoming_call.answer();
     incoming_call.on("stream", function(remoteStream) {
@@ -77,7 +76,6 @@ function initialize() {
       console.log(hangup);
       // hangup.setAttribute
       hangup.addEventListener("click", endCall);
-      // sendMouse();
     });
   });
 
@@ -102,7 +100,8 @@ function initialize() {
   peer.on("error", err => {
     console.log(err);
   });
-
+  
+  //make fullscreen compatible in all browsers
   pcScreen = document.getElementById("othervideo");
   pcScreen.addEventListener("click", openFullscreen);
   pcScreen.addEventListener("fullscreenchange", exitHandler);
@@ -111,6 +110,7 @@ function initialize() {
   pcScreen.addEventListener("MSFullscreenChange", exitHandler);
 }
 
+ //exitfullscreen using esc
 function exitHandler() {
   if (
     !document.fullscreenElement &&
@@ -119,6 +119,7 @@ function exitHandler() {
     !document.msFullscreenElement
   ) {
     console.log("exit fullscreen");
+    //when exiting fullscreen stop sending mouseData, clicks and keys
     document.removeEventListener("mousemove", sendSomeData);
     document.removeEventListener("click", sendClick);
     document.removeEventListener("keypress", sendKey);
@@ -160,6 +161,10 @@ function endCall() {
   console.log("peerConnection off");
   // sendMouse();
 }
+
+
+//Functions for sending user input (mouse, keys, click)
+// _____________________________________________________
 
 function sendMouse() {
   document.addEventListener("mousemove", sendSomeData);
@@ -235,28 +240,4 @@ function sendKey(e) {
   });
 }
 
-//   => {
-//     let position = e.x;
-//     socket.emit("mousemove", position);
-//   });
-// }
 
-// if (peerConnection) {
-//   console.log("peerConnection on");
-//   socket.emit("mousemove", position);
-// } else {
-//   console.log("peerconnection off");
-//   //this should destroy connection
-//   socket.emit("nothing");
-// }
-// });
-// }
-
-// function sendMouseData() {
-//   if (peerConnection) {
-//     console.log("Peer now on");
-//     sendMouse();
-//   } else if (peerConnection === null) {
-//     console.log("Peer now off");
-//   }
-// }
